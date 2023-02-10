@@ -18,7 +18,8 @@
                                 ),
             'button'    => array(
                                     ['name' => 'Thêm mới', 'icon' => 'fa-plus', 'class' => 'btn-primary', 'url' => route('user.create')]
-                                )
+                                ),
+            'other'     => true
         ]
     )
     <div class="row">

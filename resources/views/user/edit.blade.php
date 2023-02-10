@@ -11,9 +11,6 @@
             font-weight:700;
             color:black;
         }
-        .noty_buttons{
-            text-align:center;
-        }
     </style>
 @endsection
 
@@ -34,18 +31,18 @@
                         <input hidden value="update" name="option">
                         <input hidden value="{{ $user->id }}" name="update_id">
                         <div class="row no-gutters align-items-center">
-                            <label class="col-form-label col-lg-3">Tên đăng nhập <span class="red"> *</span>:</label>
+                            <label class="col-form-label col-lg-3">Tên đăng nhập <span class="red"> *</span></label>
                             <div class="col-lg-8">
                                 <input id="username" name="username" value="{{ $user->username }}" type="text" class="form-control form-control-sm" placeholder="Tên đăng nhập ..." required>
                                 <div class="invalid-feedback"><em></em> Vui lòng nhập tên đăng nhập</div>
                             </div>
 
-                            <label class="col-form-label col-lg-3 mt-2">Email :</label>
+                            <label class="col-form-label col-lg-3 mt-2">Email </label>
                             <div class="col-lg-8">
                                 <input id="email" name="email" type="text" value="{{ $user->email }}" class="form-control form-control-sm" placeholder="Email ...">
                             </div>
 
-                            <label class="col-form-label col-lg-3 mt-2">Trạng thái :</label>
+                            <label class="col-form-label col-lg-3 mt-2">Trạng thái </label>
                             <div class="col-lg-8">
                                 <select name="status" id="status" class="form-control form-control-sm">
                                     <option value="1" {{ $user->status == 1 ? 'selected' : ''}}>Hoạt động</option>

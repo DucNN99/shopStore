@@ -15,6 +15,7 @@
         @endforeach
     @endif
 </div>
+@if(isset($other))
 <div class="d-sm-flex align-items-center justify-content-between mb-2 breardcumb-cs">
     <div class="col-sm-1" style="padding:0">
         <select id="paginate" class="form-control form-control-sm">
@@ -30,3 +31,4 @@
         </div>
     </div>
 </div>
+@endif

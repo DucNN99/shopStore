@@ -11,9 +11,6 @@
             font-weight:700;
             color:black;
         }
-        .noty_buttons{
-            text-align:center;
-        }
     </style>
 @endsection
 
@@ -33,24 +30,24 @@
                     <form id="formUser" class="outer-repeater needs-validation formUser" novalidate method="POST">
                         <input hidden value="create" name="option">
                         <div class="row no-gutters align-items-center">
-                            <label class="col-form-label col-lg-3">Tên đăng nhập <span class="red"> *</span>:</label>
+                            <label class="col-form-label col-lg-3">Tên đăng nhập <span class="red"> *</span></label>
                             <div class="col-lg-8">
                                 <input id="username" name="username" type="text" class="form-control form-control-sm required" placeholder="Tên đăng nhập ..." required>
                                 <div class="invalid-feedback"><em></em> Vui lòng nhập tên đăng nhập</div>
                             </div>
 
-                            <label class="col-form-label col-lg-3 mt-2">Email :</label>
+                            <label class="col-form-label col-lg-3 mt-2">Email </label>
                             <div class="col-lg-8">
                                 <input id="email" name="email" type="text" class="form-control form-control-sm required" placeholder="Email ...">
                             </div>
 
-                            <label class="col-form-label col-lg-3 mt-2">Mật khẩu <span class="red"> *</span>:</label>
+                            <label class="col-form-label col-lg-3 mt-2">Mật khẩu <span class="red"> *</span></label>
                             <div class="col-lg-8">
                                 <input name="password" type="password" id="password" class="form-control form-control-sm" placeholder="Mật khẩu..." required>
                                 <div class="invalid-feedback"><em></em> Vui lòng nhập mật khẩu</div>
                             </div>
 
-                            <label class="col-form-label col-lg-3 mt-2">Trạng thái :</label>
+                            <label class="col-form-label col-lg-3 mt-2">Trạng thái </label>
                             <div class="col-lg-8">
                                 <select name="status" id="status" class="form-control form-control-sm">
                                     <option value="1" selected>Hoạt động</option>

@@ -6,4 +6,7 @@
     .breardcumb-cs a:hover{
         text-decoration:none;
     }
+    .noty_buttons{
+        text-align:center;
+    }
 </style>

@@ -1,23 +1,18 @@
-$(document).ready(function(){
-    $('#formUser').removeClass('was-validated');
-    $('#formUser').trigger('reset');
-});
-
 var create_notify = new Noty({
     type:'warning',
     theme:'semanticui',
     modal:true,
     layout:'topCenter',
-    text: '<p style="font-size:20px;"> Bạn có muốn thêm tài khoản nữa không ? </p>',
+    text: '<p style="font-size:20px;"> Bạn có muốn thêm nhóm sản phẩm nữa không ? </p>',
     buttons: [
         Noty.button('Có', 'btn btn-success', function () {
             $('#reset_btn').click();
-            $('#formUser').removeClass('was-validated');
-            $('#formUser').trigger('reset');
+            $('#formGroupProduct').removeClass('was-validated');
+            $('#formGroupProduct').trigger('reset');
             create_notify.close();
         }),
         Noty.button('Không', 'btn btn-error', function () {
-            window.location.href =  base_path+'/user';
+            window.location.href =  base_path+'/group-product';
             create_notify.close();
         })
     ]
@@ -27,7 +22,7 @@ var create_notify = new Noty({
     'use strict';
     window.addEventListener('load', function () {
         // Get the forms we want to add validation styles to
-        var forms = document.getElementsByClassName('formUser');
+        var forms = document.getElementsByClassName('formGroupProduct');
         // Loop over them and prevent submission
         var validation = Array.prototype.filter.call(forms, function (form) {
             form.addEventListener('submit', function (event) {
@@ -35,12 +30,12 @@ var create_notify = new Noty({
                 event.stopPropagation();
 
                 if (form.checkValidity() === true) {
-                    var option  = $('#formUser input[name=option]').val();
-                    var data    = $('#formUser').serialize();
+                    var option  = $('#formGroupProduct input[name=option]').val();
+                    var data    = $('#formGroupProduct').serialize();
                     if (option == 'create') {
                         $.ajax({
                             type: 'POST',
-                            url: base_path+'/user',
+                            url: base_path+'/group-product',
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
@@ -55,10 +50,10 @@ var create_notify = new Noty({
                         });
                     }
                     if (option == 'update') {
-                        var id = $('#formUser input[name=update_id]').val();
+                        var id = $('#formGroupProduct input[name=update_id]').val();
                         $.ajax({
                             type: 'PUT',
-                            url: base_path+'/user/'+id,
+                            url: base_path+'/group-product/'+id,
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
@@ -81,47 +76,37 @@ var create_notify = new Noty({
     }, false);
 })();
 
-$(document).on('click', '#resetpassword',function(){
-    var id              = $(this).data('id');
-    var resetps_notify  = new Noty({
-        type:'warning',
-        theme:'semanticui',
-        modal:true,
-        layout:'topCenter',
-        text: '<p style="font-size:20px;"> Bạn có muốn reset mật khẩu không ? </p>',
-        buttons: [
-            Noty.button('Có', 'btn btn-success', function () {
-                $.ajax({
-                    type: 'POST',
-                    url: base_path+'/user/reset-password/'+id,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function (data) {
-                        notify("<div style='font-size:15px'><i class='fa fa-check'></i> Reset mật khẩu thành công</div>",'success');
-                        var new_pass  = new Noty({
-                            type:'warning',
-                            theme:'semanticui',
-                            modal:true,
-                            layout:'topCenter',
-                            text: '<p style="font-size:20px;"> Mật khẩu mới : '+data+' </p>'
-                        });
-                        new_pass.show();
-                    },
-                    error: function (data) {
-                        message(data);
-                    }
-                });
-                resetps_notify.close();
-            }),
-            Noty.button('Không', 'btn btn-error', function () {
-                resetps_notify.close();
-            })
-        ]
-    });
-    resetps_notify.show();
-
+$('#search').on('keyup', function() {
+    fetch_data();
 });
+
+$('#paginate').on('change', function() {
+    fetch_data();
+});
+
+$(document).on('click', '#paginationGroup .pagination a', function(e) {
+    e.preventDefault();
+    var page = $(this).attr('href').split('page=')[1];
+    fetch_data(page);
+});
+
+function fetch_data(page)
+{
+    var search      = $('#search').val();
+    var perPage     = $('#paginate').val();
+    $.ajax({
+        type: "GET",
+        url: base_path+'/group-product/search',
+        data: {
+            'search'    :search,
+            'page'      :page,
+            'perPage'   :perPage,
+        },
+        success: function(data) {
+            $('#data-table').html(data);
+        }
+    });
+}
 
 $(document).on('click','.action_delete',function(){
     var id  = $(this).data('id');
@@ -130,18 +115,18 @@ $(document).on('click','.action_delete',function(){
         theme:'semanticui',
         modal:true,
         layout:'topCenter',
-        text: '<p style="font-size:20px;"> Bạn có muốn xóa tài khoản này không ? </p>',
+        text: '<p style="font-size:20px;"> Bạn có muốn xóa nhóm sản phẩm này không ? </p>',
         buttons: [
         Noty.button('YES', 'btn btn-success', function () {
             $.ajax({
                 type: 'DELETE',
-                url: base_path+'/user/'+id,
+                url: base_path+'/group-product/'+id,
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (data) {
-                    notify("<div style='font-size:15px'><i class='fa fa-check'></i> Xóa tài khoản thành công </div>",'success');
-                    fetch_data($('#paginationUser .pagination .active .page-link').html());
+                    notify("<div style='font-size:15px'><i class='fa fa-check'></i> Xóa nhóm sản phẩm thành công </div>",'success');
+                    fetch_data($('#paginationGroup .pagination .active .page-link').html());
                 },
                 error: function (data) {
                     message(data);
@@ -157,37 +142,3 @@ $(document).on('click','.action_delete',function(){
     });
     n.show()
 });
-
-$('#search').on('keyup', function() {
-    fetch_data();
-});
-
-$('#paginate').on('change', function() {
-    fetch_data();
-});
-
-$(document).on('click', '#paginationUser .pagination a', function(e) {
-    e.preventDefault();
-    var page = $(this).attr('href').split('page=')[1];
-    fetch_data(page);
-});
-
-function fetch_data(page)
-{
-    var search      = $('#search').val();
-    var perPage     = $('#paginate').val();
-    $.ajax({
-        type: "GET",
-        url: base_path+'/user/search',
-        data: {
-            'search'    :search,
-            'page'      :page,
-            'perPage'   :perPage,
-        },
-        success: function(data) {
-            $('#data-table').html(data);
-        }
-    });
-}
-
-
