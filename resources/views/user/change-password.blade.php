@@ -39,7 +39,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="col-lg-12 text-center">
-                        <button type="submit" id="update_password" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Cập nhật</button>
+                        <button type="submit" id="update_password" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Cập nhập</button>
                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Đóng</button>
                     </div>
                 </div>

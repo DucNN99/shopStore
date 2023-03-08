@@ -11,4 +11,9 @@ class PurchaseOrderDetail extends Model
     protected $guarded  = [];
 
     protected $perPage  = 10;
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }

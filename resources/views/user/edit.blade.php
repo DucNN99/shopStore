@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title') Cập nhật tài khoản @endsection
+@section('title') Cập nhập tài khoản @endsection
 
 @section('css')
     <style>
@@ -19,7 +19,7 @@
         [
             'title'     => array(
                                     ['name' => 'Tài khoản', 'url' => route('user.index')],
-                                    ['name' => 'Cập nhật',  'url' => '']
+                                    ['name' => 'Cập nhập',  'url' => '']
                                 ),
         ]
     )
@@ -52,7 +52,7 @@
 
                             <div class="col-lg-12 text-center mt-3">
                                 <button class="btn btn-sm btn-success" type="submit">
-                                    <i class="fas fa-plus"></i> Cập nhật
+                                    <i class="fas fa-plus"></i> Cập nhập
                                 </button>
                                 <button class="btn btn-sm btn-warning" type="button" id="resetpassword" data-id="{{ $user->id }}">
                                     <i class="fas fa-key"></i> Reset mật khẩu

@@ -45,3 +45,11 @@ number_format = function(number, decimals, dec_point, thousands_sep) {
 
     return x1 + x2;
 }
+
+function replaceRow(data,array_replace_old,array_replace_new)
+{
+    $.each(array_replace_old,function(i,v) {
+        data = data.replaceAll(v,array_replace_new[i]);
+    });
+    return data;
+}

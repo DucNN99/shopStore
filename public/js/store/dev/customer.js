@@ -59,7 +59,7 @@ reset_btnreset_btn
                             },
                             data: data,
                             success: function (data) {
-                                notify("<div style='font-size:15px'><i class='fa fa-check'></i> Cập nhật thành công</div>",'success');
+                                notify("<div style='font-size:15px'><i class='fa fa-check'></i> Cập nhập thành công</div>",'success');
                                 setTimeout(function(){
                                     location.reload();
                                 }, 1000);

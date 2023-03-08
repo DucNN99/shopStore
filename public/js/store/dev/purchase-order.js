@@ -1,8 +1,26 @@
+$('.decimal').inputmask('decimal',{
+    'alias': 'numeric',
+    'groupSeparator': '.',
+    'autoGroup': true,
+    'digits': 2,
+    'radixPoint': ",",
+    'digitsOptional': false,
+    'allowMinus': false,
+    'placeholder': '00',
+});
+
+var number = 0;
+
 $('.add-item').click(function () {
     data = $('#row_table').html().replace("</tbody>","").replace("<tbody>","");
 
+    number += 1;
+
+    array_replace_old = ['A-'];
+    array_replace_new = ['A-'+number];
+
+    data = replaceRow(data,array_replace_old,array_replace_new);
     $('#show-row').append(data);
-    $('#show-row .product').select2();
     $('#show-row .decimal').inputmask('decimal',{
         'alias': 'numeric',
         'groupSeparator': '.',
@@ -45,21 +63,6 @@ $('#reset_btn').on('click', function(){
     $('#formOrder').removeClass('was-validated');
     $('#formOrder').trigger('reset');
     $('#show-row').html('');
-    $('#customer').select2('');
-});
-
-$('#add-customer').on('click', function(){
-    $('#formCustomer').removeClass('was-validated');
-    $('#formCustomer').trigger('reset');
-    $.ajax({
-        type: "GET",
-        url: base_path+'/customer/code',
-        success: function(data) {
-            $('#formCustomer').removeClass('was-validated');
-            $('#formCustomer').trigger('reset');
-            $('#formCustomer #code').val(data);
-        }
-    });
 });
 
 var create_notify = new Noty({
@@ -73,7 +76,6 @@ var create_notify = new Noty({
             $('#formOrder').removeClass('was-validated');
             $('#formOrder').trigger('reset');
             $('#show-row').html('');
-            $('#customer').select2('');
             create_notify.close();
         }),
         Noty.button('Không', 'btn btn-error', function () {
@@ -97,24 +99,114 @@ var create_notify = new Noty({
                 if (form.checkValidity() === true) {
                     var option  = $('#formOrder input[name=option]').val();
                     var data    = $('#formOrder').serialize();
-                    $.ajax({
-                        type: 'POST',
-                        url: base_path+'/purchase-order',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: data,
-                        success: function (data) {
-                            notify("<div style='font-size:15px'><i class='fa fa-check'></i> Thêm mới thành công</div>",'success');
-                            create_notify.show();
-                        },
-                        error: function (data) {
-                            message(data);
-                        }
-                    });
+                    if (option == 'create') {
+                        $.ajax({
+                            type: 'POST',
+                            url: base_path+'/purchase-order',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: data,
+                            success: function (data) {
+                                notify("<div style='font-size:15px'><i class='fa fa-check'></i> Thêm mới thành công</div>",'success');
+                                create_notify.show();
+                            },
+                            error: function (data) {
+                                message(data);
+                            }
+                        });
+                    }
+                    if (option == 'update') {
+                        var id = $('#formOrder input[name=update_id]').val();
+                        $.ajax({
+                            type: 'PUT',
+                            url: base_path+'/purchase-order/'+id,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: data,
+                            success: function (data) {
+                                notify("<div style='font-size:15px'><i class='fa fa-check'></i> Cập nhập thành công</div>",'success');
+                                setTimeout(function(){
+                                    location.reload();
+                                }, 1000);
+                            },
+                            error: function (data) {
+                                message(data);
+                            }
+                        });
+                    }
+
                 }
                 form.classList.add('was-validated');
             }, false);
         });
     }, false);
 })();
+
+$('#search').on('keyup', function() {
+    fetch_data();
+});
+
+$('#paginate').on('change', function() {
+    fetch_data();
+});
+
+$(document).on('click', '#paginationOrder .pagination a', function(e) {
+    e.preventDefault();
+    var page = $(this).attr('href').split('page=')[1];
+    fetch_data(page);
+});
+
+function fetch_data(page)
+{
+    var search      = $('#search').val();
+    var perPage     = $('#paginate').val();
+    $.ajax({
+        type: "GET",
+        url: base_path+'/purchase-order/search',
+        data: {
+            'search'    :search,
+            'page'      :page,
+            'perPage'   :perPage,
+        },
+        success: function(data) {
+            $('#data-table').html(data);
+        }
+    });
+}
+
+$(document).on('click','.action_delete',function(){
+    var id  = $(this).data('id');
+    var n   = new Noty({
+        type:'warning',
+        theme:'semanticui',
+        modal:true,
+        layout:'topCenter',
+        text: '<p style="font-size:20px;"> Bạn có muốn xóa sản phẩm này không ? </p>',
+        buttons: [
+        Noty.button('Có', 'btn btn-success', function () {
+            $.ajax({
+                type: 'DELETE',
+                url: base_path+'/purchase-order/'+id,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (data) {
+                    notify("<div style='font-size:15px'><i class='fa fa-check'></i> Xóa đơn mua hàng thành công </div>",'success');
+                    fetch_data($('#paginationOrder .pagination .active .page-link').html());
+                },
+                error: function (data) {
+                    message(data);
+                }
+            });
+            n.close();
+        }, {id: 'button1', 'data-status': 'ok'}),
+
+        Noty.button('Không', 'btn btn-error', function () {
+            n.close();
+        })
+        ]
+    });
+    n.show()
+});

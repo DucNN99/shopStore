@@ -9,7 +9,7 @@
             'type'    =>  'sanpham',
             'id'      =>  'product_id',
             'name'    =>  'product_id[]',
-            'position'=>  'product_id',
+            'position'=>  'A-',
             'pass'    =>  'yes',
             'required'=>  'required',
         ])

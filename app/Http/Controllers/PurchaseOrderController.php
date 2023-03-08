@@ -41,10 +41,8 @@ class PurchaseOrderController extends Controller
      */
     public function create()
     {
-        $customers  = $this->customer->getCustomer();
-        $products   = $this->product->getProduct();
         $order_code = 'DMH'.Carbon::now()->format('dmy_hms');
-        return view('purchase-order.create', compact(['customers', 'products', 'order_code']));
+        return view('purchase-order.create', compact(['order_code']));
     }
 
     /**
@@ -55,35 +53,8 @@ class PurchaseOrderController extends Controller
      */
     public function store(Request $request)
     {
-        DB::beginTransaction();
-        try {
-            $order              = new PurchaseOrder();
-            $order->order_code  = $request->code;
-            $order->customer_id = $request->customer_id;
-            $order->day_in      = $request->day_in;
-            $order->total       = (double)(str_replace(',', '.',str_replace('.', '',$request->total_all)));
-            $order->note        = $request->note;
-            $order->is_del      = 0;
-            $order->save();
-            if (isset($request->product_id)) {
-                foreach ($request->product_id as $key => $item) {
-                    $detail                     = new PurchaseOrderDetail();
-                    $detail->purchase_order_id  = $order->id;
-                    $detail->product_id         = $request->product_id[$key];
-                    $detail->quantity           = (double)(str_replace(',', '.',str_replace('.', '', $request->quantity[$key])));
-                    $detail->cost               = (double)(str_replace(',', '.',str_replace('.', '', $request->cost[$key])));
-                    $detail->total              = (double)(str_replace(',', '.',str_replace('.', '', $request->total[$key])));
-                    $detail->manufacture        = $request->manufacture[$key];
-                    $detail->expired            = $request->expired[$key];
-                    $detail->save();
-                }
-            }
-            DB::commit();
-            return response()->json(['success' => true]);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json(['success' => false]);
-        }
+        $order = $this->order->storeOrder($request);
+        return response()->json(['success' => true]);
     }
 
     /**
@@ -92,9 +63,14 @@ class PurchaseOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $type)
     {
-        //
+        switch ($type) {
+            case 'search':
+                    $orders = $this->order->getOrder($request);
+                    return view('purchase-order.table', compact('orders'));
+                break;
+        }
     }
 
     /**
@@ -105,7 +81,8 @@ class PurchaseOrderController extends Controller
      */
     public function edit($id)
     {
-        //
+        $order = $this->order->getOrderById($id);
+        return view('purchase-order.edit', compact(['order']));
     }
 
     /**
@@ -117,7 +94,8 @@ class PurchaseOrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $order = $this->order->updateOrder($request, $id);
+        return response()->json(['success' => true]);
     }
 
     /**
@@ -128,6 +106,7 @@ class PurchaseOrderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->order->deleteOrder($id);
+        return response()->json(['success' => true]);
     }
 }

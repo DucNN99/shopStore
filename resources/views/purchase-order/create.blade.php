@@ -123,7 +123,7 @@
         </div>
     </div>
     <table id="row_table" style="display: none">
-        @include('purchase-order.row', ['products' => $products])
+        @include('purchase-order.row')
     </table>
     @include('purchase-order.modal.customer')
     @include('purchase-order.modal.product')

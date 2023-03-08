@@ -1,6 +1,6 @@
 @extends('layout.master')
 
-@section('title') Cập nhật sản phẩm @endsection
+@section('title') Cập nhập sản phẩm @endsection
 
 @section('css')
     <style>
@@ -19,7 +19,7 @@
         [
             'title'     => array(
                                     ['name' => 'Sản phẩm', 'url' => route('product.index')],
-                                    ['name' => 'Cập nhật',  'url' => '']
+                                    ['name' => 'Cập nhập',  'url' => '']
                                 ),
         ]
     )
@@ -55,7 +55,7 @@
 
                             <div class="col-lg-12 text-center mt-3">
                                 <button class="btn btn-sm btn-success" type="submit">
-                                    <i class="fas fa-plus"></i> Cập nhật
+                                    <i class="fas fa-plus"></i> Cập nhập
                                 </button>
                                 <a class="btn btn-sm btn-secondary" role="button" href="{{ route('product.index') }}">
                                     <i class="fa fa-rotate-right"></i> Trở lại
