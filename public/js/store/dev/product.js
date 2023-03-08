@@ -3,16 +3,16 @@ var create_notify = new Noty({
     theme:'semanticui',
     modal:true,
     layout:'topCenter',
-    text: '<p style="font-size:20px;"> Bạn có muốn thêm nhóm sản phẩm nữa không ? </p>',
+    text: '<p style="font-size:20px;"> Bạn có muốn thêm sản phẩm nữa không ? </p>',
     buttons: [
         Noty.button('Có', 'btn btn-success', function () {
             $('#reset_btn').click();
-            $('#formGroupProduct').removeClass('was-validated');
-            $('#formGroupProduct').trigger('reset');
+            $('#formProduct').removeClass('was-validated');
+            $('#formProduct').trigger('reset');
             create_notify.close();
         }),
         Noty.button('Không', 'btn btn-error', function () {
-            window.location.href =  base_path+'/group-product';
+            window.location.href =  base_path+'/product';
             create_notify.close();
         })
     ]
@@ -22,7 +22,7 @@ var create_notify = new Noty({
     'use strict';
     window.addEventListener('load', function () {
         // Get the forms we want to add validation styles to
-        var forms = document.getElementsByClassName('formGroupProduct');
+        var forms = document.getElementsByClassName('formProduct');
         // Loop over them and prevent submission
         var validation = Array.prototype.filter.call(forms, function (form) {
             form.addEventListener('submit', function (event) {
@@ -30,12 +30,12 @@ var create_notify = new Noty({
                 event.stopPropagation();
 
                 if (form.checkValidity() === true) {
-                    var option  = $('#formGroupProduct input[name=option]').val();
-                    var data    = $('#formGroupProduct').serialize();
+                    var option  = $('#formProduct input[name=option]').val();
+                    var data    = $('#formProduct').serialize();
                     if (option == 'create') {
                         $.ajax({
                             type: 'POST',
-                            url: base_path+'/group-product',
+                            url: base_path+'/product',
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
@@ -50,10 +50,10 @@ var create_notify = new Noty({
                         });
                     }
                     if (option == 'update') {
-                        var id = $('#formGroupProduct input[name=update_id]').val();
+                        var id = $('#formProduct input[name=update_id]').val();
                         $.ajax({
                             type: 'PUT',
-                            url: base_path+'/group-product/'+id,
+                            url: base_path+'/product/'+id,
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
@@ -84,7 +84,7 @@ $('#paginate').on('change', function() {
     fetch_data();
 });
 
-$(document).on('click', '#paginationGroup .pagination a', function(e) {
+$(document).on('click', '#paginationProduct .pagination a', function(e) {
     e.preventDefault();
     var page = $(this).attr('href').split('page=')[1];
     fetch_data(page);
@@ -96,7 +96,7 @@ function fetch_data(page)
     var perPage     = $('#paginate').val();
     $.ajax({
         type: "GET",
-        url: base_path+'/group-product/search',
+        url: base_path+'/product/search',
         data: {
             'search'    :search,
             'page'      :page,
@@ -115,18 +115,18 @@ $(document).on('click','.action_delete',function(){
         theme:'semanticui',
         modal:true,
         layout:'topCenter',
-        text: '<p style="font-size:20px;"> Bạn có muốn xóa nhóm sản phẩm này không ? </p>',
+        text: '<p style="font-size:20px;"> Bạn có muốn xóa sản phẩm này không ? </p>',
         buttons: [
         Noty.button('Có', 'btn btn-success', function () {
             $.ajax({
                 type: 'DELETE',
-                url: base_path+'/group-product/'+id,
+                url: base_path+'/product/'+id,
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (data) {
                     notify("<div style='font-size:15px'><i class='fa fa-check'></i> Xóa nhóm sản phẩm thành công </div>",'success');
-                    fetch_data($('#paginationGroup .pagination .active .page-link').html());
+                    fetch_data($('#paginationProduct .pagination .active .page-link').html());
                 },
                 error: function (data) {
                     message(data);

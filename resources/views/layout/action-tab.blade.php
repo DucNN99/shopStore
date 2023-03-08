@@ -1,4 +1,4 @@
-<div class="d-sm-flex align-items-center justify-content-between mb-1 breardcumb-cs">
+<div class="d-sm-flex align-items-center justify-content-between mb-3 breardcumb-cs">
     <h3 class="h3 mb-0 text-gray-800">
     @foreach($title as $key => $value)
         <a href="{{ $value['url'] != '' ? $value['url'] : '#' }}">{{ $value['name'] }}</a>

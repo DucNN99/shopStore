@@ -22,21 +22,24 @@ Route::post("/login",   [UserController::class,'login'])->name("login");
 Route::get("/logout",   [UserController::class,'logout'])->name("logout");
 
 Route::group(['middleware' => 'login'], function () {
-    //================all==========================
+
+    Route::get('/getdata','ComponentController@show')->name('getdata');
+
     Route::post('change-password', [UserController::class,'changepassword']);
 
-    //===============dashboard==================
     Route::get("/dashboard", function(){
         return view('dashboard');
     })->name("dashboard");
 
-
-    //===============nhóm hàng==================
     Route::resource('group-product', 'GroupProductController');
-    //==============khách hàng==================
+
+    Route::resource('product', 'ProductController');
+
     Route::resource('customer', 'CustomerController');
-    //==================đơn mua hàng=================
-    
+    Route::get('generate-customer', 'CustomerController@generateCustomer');
+
+    Route::resource('purchase-order', 'PurchaseOrderController');
+
     //================admin================
     Route::group(['middleware' => 'admin'], function () {
         Route::resource('user', 'UserController');

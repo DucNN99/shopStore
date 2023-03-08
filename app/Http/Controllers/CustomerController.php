@@ -46,18 +46,18 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate(
-        //     [
-        //         'code'  => [Rule::unique('customer','code')->where(function($query) use ($request) {
-        //                             $query->where('is_del', 0); })
-        //         ]
-        //     ],
-        //     [
-        //         'code.unique'   => 'MÃ KH/NCC đã tồn tại !',
-        //     ]
-        // );
-        $this->customer->storeCustomer($request);
-        return response()->json(['success' => true]);
+        $request->validate(
+            [
+                'code'  => [Rule::unique('customer','code')->where(function($query) {
+                                    $query->where('is_del', 0); })
+                ]
+            ],
+            [
+                'code.unique'   => 'MÃ KH/NCC đã tồn tại !',
+            ]
+        );
+        $customer = $this->customer->storeCustomer($request);
+        return response()->json(['success' => true, 'customer_id' => $customer->id]);
     }
 
     /**
@@ -101,16 +101,16 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $request->validate(
-        //     [
-        //         'code'  => [Rule::unique('customer','code')->where(function($query) use ($request) {
-        //                             $query->where('is_del', 0); })
-        //         ]
-        //     ],
-        //     [
-        //         'code.unique'   => 'MÃ KH/NCC đã tồn tại !',
-        //     ]
-        // );
+        $request->validate(
+            [
+                'code'  => [Rule::unique('customer','code')->where(function($query) use ($id) {
+                                    $query->where('is_del', 0)->where('id', '!=', $id); })
+                ]
+            ],
+            [
+                'code.unique'   => 'MÃ KH/NCC đã tồn tại !',
+            ]
+        );
         $this->customer->updateCustomer($request, $id);
         return response()->json(['success' => true]);
     }
@@ -125,5 +125,11 @@ class CustomerController extends Controller
     {
         $this->customer->deleteCustomer($id);
         return response()->json(['success' => true]);
+    }
+
+    public function generateCustomer()
+    {
+        $customers = $this->customer->getCustomer(null, true);
+        return response()->json($customers);
     }
 }

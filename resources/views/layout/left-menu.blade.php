@@ -21,7 +21,7 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('customer.index') }}">Khách hàng &amp; NCC</a>
-                <a class="collapse-item" href="#">Đơn mua hàng</a>
+                <a class="collapse-item" href="{{ route('purchase-order.index') }}">Đơn mua hàng</a>
                 <a class="collapse-item" href="#">Đơn bán hàng</a>
             </div>
         </div>
@@ -36,7 +36,7 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('group-product.index') }}">Nhóm sản phẩm</a>
-                <a class="collapse-item" href="#">Sản phẩm</a>
+                <a class="collapse-item" href="{{ route('product.index') }}">Sản phẩm</a>
             </div>
         </div>
     </li>

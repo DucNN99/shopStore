@@ -33,6 +33,7 @@
         </div>
     </div>
     @include('user.change-password')
+    @include('layout.component.modal')
     @yield('js')
 </body>
 </html>

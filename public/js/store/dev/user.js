@@ -132,7 +132,7 @@ $(document).on('click','.action_delete',function(){
         layout:'topCenter',
         text: '<p style="font-size:20px;"> Bạn có muốn xóa tài khoản này không ? </p>',
         buttons: [
-        Noty.button('YES', 'btn btn-success', function () {
+        Noty.button('Có', 'btn btn-success', function () {
             $.ajax({
                 type: 'DELETE',
                 url: base_path+'/user/'+id,
@@ -150,7 +150,7 @@ $(document).on('click','.action_delete',function(){
             n.close();
         }, {id: 'button1', 'data-status': 'ok'}),
 
-        Noty.button('NO', 'btn btn-error', function () {
+        Noty.button('Không', 'btn btn-error', function () {
             n.close();
         })
         ]

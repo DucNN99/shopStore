@@ -16,17 +16,7 @@ var create_notify = new Noty({
     ]
 });
 
-$(document).on('click', '#reset_btn',function(){
-    $.ajax({
-        type: "GET",
-        url: base_path+'/customer/code',
-        success: function(data) {
-            $('#formCustomer').removeClass('was-validated');
-            $('#formCustomer').trigger('reset');
-            $('#formCustomer #code').val(data);
-        }
-    });
-});
+reset_btnreset_btn
 
 (function () {
     'use strict';
@@ -127,7 +117,7 @@ $(document).on('click','.action_delete',function(){
         layout:'topCenter',
         text: '<p style="font-size:20px;"> Bạn có muốn xóa KH/NCC này không ? </p>',
         buttons: [
-        Noty.button('YES', 'btn btn-success', function () {
+        Noty.button('Có', 'btn btn-success', function () {
             $.ajax({
                 type: 'DELETE',
                 url: base_path+'/customer/'+id,
@@ -145,7 +135,7 @@ $(document).on('click','.action_delete',function(){
             n.close();
         }, {id: 'button1', 'data-status': 'ok'}),
 
-        Noty.button('NO', 'btn btn-error', function () {
+        Noty.button('Không', 'btn btn-error', function () {
             n.close();
         })
         ]
